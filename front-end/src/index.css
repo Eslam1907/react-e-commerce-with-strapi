@@ -44,4 +44,7 @@ font-size: 17px !important;
   /* for Firefox */
    /* html {scrollbar-color: #9e4673 #3d4a59;}  */
 
-  
+  .imaaaage:hover{
+    transition: .6s;
+    scale: 1.1;
+  }

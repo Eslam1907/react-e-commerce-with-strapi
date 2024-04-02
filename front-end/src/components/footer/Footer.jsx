@@ -12,7 +12,7 @@ function Footer() {
     justifyContent={"center"}
     color={"HighlightText"}
     variant='h6'
-    fontSize={18}
+    fontSize={{xs:12,sm:18}}
     > 
         Designed and developed by
 <Button sx={{
@@ -23,12 +23,15 @@ function Footer() {
 }}
 variant='text'
 color='primary'
+href='https://myportfolio1907.netlify.app'
 >
 
     Eslam Mohamed
 </Button>
+
         @2024
     </Typography>
+    
     </Box>
   )
 }

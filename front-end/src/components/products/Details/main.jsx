@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Box,
+  CircularProgress,
   Container,
   IconButton,
   Rating,
@@ -19,12 +20,12 @@ import Dialog from "@mui/material/Dialog";
 import { Close } from "@mui/icons-material";
 import Details from "./Details";
 import { useGetproductByNameQuery } from "../../../redux/product";
-
+import { AnimatePresence, motion } from "framer-motion";
 function Main() {
-  
-
   const handleChange = (event, newValue) => {
-    setProducts(newValue)
+    if (newValue !== null) {
+      setProducts(newValue);
+    }
   };
   const [open, setOpen] = useState(false);
 
@@ -41,28 +42,27 @@ function Main() {
   const allProductWOmen = "products?populate=*&filters[category][$eq]=women";
 
   const [products, setProducts] = useState(allProduct);
-  
+  const [productsDetails, setProductsDetails] = useState({});
+
   const { data, error, isLoading } = useGetproductByNameQuery(products);
- 
-if (error){
-  return(
-    <Typography variant="body1">
-{" "}
-{
-  error.message
-}
-    </Typography>
-  )
-}
+  if (isLoading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", py: 12 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-if (isLoading){
-  return(
-    <Typography variant="body1">
-lllllaaaoooooodin
-
-    </Typography>
-  )
-}
+  if (error) {
+    return (
+      <Container sx={{ my: 10, textAlign: "center" }}>
+        <Box variant="body1">
+          {error.error}
+          please try again
+        </Box>
+      </Container>
+    );
+  }
 
   if (data) {
     return (
@@ -117,12 +117,20 @@ lllllaaaoooooodin
           direction={"row"}
           alignItems={"center"}
           sx={{ my: 5 }}
-          justifyContent={"space-between"}
+          justifyContent={{xs:"center",sm:"center",md:"space-between"}}
           flexWrap={"wrap"}
         >
-          {data.data.map((product) => {
+
+        <AnimatePresence>
+  {data.data.map((product) => {
             return (
               <Card
+                component={motion.section}
+                layout
+                animate={{ transform:"scale(1)" }}
+                initial={{ transform:"scale(0)" }}
+                transition={{duration: 0.8}}
+                key={product.id}
                 sx={{
                   maxWidth: 330,
                   ":hover .MuiCardMedia-root": {
@@ -147,7 +155,7 @@ lllllaaaoooooodin
                     </Typography>
 
                     <Typography gutterBottom variant="h6" component="p">
-                      {product.attributes.price}
+                      {product.attributes.price}$
                     </Typography>
                   </Stack>
                   <Typography variant="body2" color="text.secondary">
@@ -157,7 +165,10 @@ lllllaaaoooooodin
 
                 <CardActions sx={{ justifyContent: "space-between" }}>
                   <Button
-                    onClick={handleClickOpen}
+                    onClick={() => {
+                      handleClickOpen();
+                      setProductsDetails(product);
+                    }}
                     size="small"
                     sx={{
                       display: "flex",
@@ -181,6 +192,10 @@ lllllaaaoooooodin
               </Card>
             );
           })}
+
+
+        </AnimatePresence>
+        
         </Stack>
         <Dialog
           open={open}
@@ -209,7 +224,7 @@ lllllaaaoooooodin
             <Close />
           </IconButton>
 
-          <Details />
+          <Details productsDetails={productsDetails} />
         </Dialog>
       </Container>
     );
