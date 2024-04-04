@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+      {
+          "label": "StartStrapiServer",
+          "type": "shell",
+          "command": "npm",
+          "args": [
+              "run",
+              "start"
+          ],
+          "group": "build",
+          "presentation": {
+              "reveal": "always",
+              "panel": "new"
+          },
+          "problemMatcher": []
+      }
+  ]
+}

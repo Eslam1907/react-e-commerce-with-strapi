@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+      {
+          "type": "node",
+          "request": "launch",
+          "name": "Launch App",
+          "program": "${workspaceFolder}/app.js",
+          "preLaunchTask": "StartStrapiServer", 
+          "outFiles": [
+              "${workspaceFolder}/dist/**/*.js"
+          ]
+      }
+  ]
+}
